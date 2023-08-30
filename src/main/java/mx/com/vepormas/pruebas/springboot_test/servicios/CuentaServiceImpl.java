@@ -2,14 +2,18 @@ package mx.com.vepormas.pruebas.springboot_test.servicios;
 
 import java.math.BigDecimal;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import mx.com.vepormas.pruebas.springboot_test.modelos.Banco;
 import mx.com.vepormas.pruebas.springboot_test.modelos.Cuenta;
 import mx.com.vepormas.pruebas.springboot_test.repositorios.BancoRepositorio;
 import mx.com.vepormas.pruebas.springboot_test.repositorios.CuentaRepositorio;
 
+@Service
 public class CuentaServiceImpl implements CuentaService{
-private CuentaRepositorio crep;
-private BancoRepositorio brep;
+    private CuentaRepositorio crep;
+    private BancoRepositorio brep;
 
     public CuentaServiceImpl(CuentaRepositorio crep, BancoRepositorio brep) {
     this.crep = crep;

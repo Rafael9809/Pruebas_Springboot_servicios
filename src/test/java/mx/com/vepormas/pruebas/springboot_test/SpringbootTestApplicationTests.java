@@ -18,28 +18,37 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import mx.com.vepormas.pruebas.springboot_test.excepciones.DineroInsuficienteException;
 import mx.com.vepormas.pruebas.springboot_test.modelos.Banco;
 import mx.com.vepormas.pruebas.springboot_test.modelos.Cuenta;
 import mx.com.vepormas.pruebas.springboot_test.repositorios.BancoRepositorio;
 import mx.com.vepormas.pruebas.springboot_test.repositorios.CuentaRepositorio;
-import mx.com.vepormas.pruebas.springboot_test.servicios.CuentaServiceImpl;
+import mx.com.vepormas.pruebas.springboot_test.servicios.CuentaService;
 
 @SpringBootTest
 class SpringbootTestApplicationTests {
 
-	@Mock
+	@MockBean
 	CuentaRepositorio crep;
-	@Mock
+	@MockBean
 	BancoRepositorio brep;
-	@InjectMocks
-	CuentaServiceImpl cser;
+    @Autowired
+	CuentaService cser;
+
+	// @Mock
+	// CuentaRepositorio crep;
+	// @Mock
+	// BancoRepositorio brep;
+	// @InjectMocks
+	// CuentaServiceImpl cser;
 
 	@BeforeEach
     void initTests(){
-        MockitoAnnotations.openMocks(this);
+        //MockitoAnnotations.openMocks(this);
 		Datos.c1.setSaldo(new BigDecimal("1000"));
 		Datos.c2.setSaldo(new BigDecimal("2000"));
 		Datos.banco.setTotalTransferencia(0);
@@ -102,7 +111,7 @@ class SpringbootTestApplicationTests {
 		verify(crep, never()).update(any(Cuenta.class));
 
 		verify(brep).findById(1L);
-		verify(brep).update(any(Banco.class));
+		verify(brep, never()).update(any(Banco.class));
 	}
 
 	@Test
@@ -116,7 +125,7 @@ class SpringbootTestApplicationTests {
 		assertTrue(c1==c2);
 		assertEquals("Rafael",c1.getPersona());
 		assertEquals("Rafael",c2.getPersona());
-		
+
 		verify(crep, times(2)).findById(1L);
 	}
 	
