@@ -1,8 +1,11 @@
 package mx.com.vepormas.pruebas.springboot_test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -68,6 +71,9 @@ class SpringbootTestApplicationTests {
 
 		verify(brep, times(2)).findById(1L);
 		verify(brep).update(any(Banco.class));
+
+		verify(crep, times(6)).findById(anyLong());
+		verify(crep, never()).findAll();
 	}
 
 	@Test
@@ -96,7 +102,22 @@ class SpringbootTestApplicationTests {
 		verify(crep, never()).update(any(Cuenta.class));
 
 		verify(brep).findById(1L);
-		verify(brep, never()).update(any(Banco.class));
+		verify(brep).update(any(Banco.class));
+	}
+
+	@Test
+	void contextLoads3(){
+		when(crep.findById(1L)).thenReturn(Datos.crearC1());
+
+		Cuenta c1 = cser.findById(1L);
+		Cuenta c2 = cser.findById(1L);
+
+		assertSame(c1,c2);
+		assertTrue(c1==c2);
+		assertEquals("Rafael",c1.getPersona());
+		assertEquals("Rafael",c2.getPersona());
+		
+		verify(crep, times(2)).findById(1L);
 	}
 	
 
